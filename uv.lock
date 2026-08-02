@@ -92,7 +92,7 @@ wheels = [
 ]
 
 [[package]]
-name = "backend"
+name = "task-planner"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

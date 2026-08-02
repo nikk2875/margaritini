@@ -1,6 +1,6 @@
-# Idea Planner
+# Task Planner
 
-Idea Planner is a visual workspace for turning ideas into an actionable project plan.
+Task Planner is a visual workspace for turning ideas into an actionable project plan.
 
 Use it to create primary goals, break them into secondary goals, add actions and tasks, connect related work, and produce a clear written plan when you are ready to share it.
 

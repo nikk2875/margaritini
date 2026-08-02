@@ -1,4 +1,4 @@
-# Idea Planner Implementation Plan
+# Task Planner Implementation Plan
 
 ## 1. Define product rules
 

@@ -25,7 +25,7 @@ BACKEND_PID=$!
 ) &
 FRONTEND_PID=$!
 
-echo "Idea Planner is starting:"
+echo "Task Planner is starting:"
 echo "  Frontend: http://localhost:6002"
 echo "  API:      http://localhost:8000/api"
 echo "Press Ctrl+C to stop both services."
