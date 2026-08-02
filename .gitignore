@@ -1,0 +1,19 @@
+# Local Python environment and generated files
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local application data
+*.db
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+
+# Local configuration
+.env
+.env.*
+!.env.example
