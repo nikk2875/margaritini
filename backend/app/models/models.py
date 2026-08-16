@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from sqlalchemy import (
     Boolean,
@@ -22,12 +22,12 @@ def new_id() -> str:
     return str(uuid.uuid4())
 
 
-class NodeType(str, Enum):
+class NodeType(StrEnum):
     GOAL = "goal"
     ACTION = "action"
 
 
-class DisplayStyle(str, Enum):
+class DisplayStyle(StrEnum):
     NUMBERED = "numbered"
     BULLETED = "bulleted"
 

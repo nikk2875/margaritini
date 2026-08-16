@@ -3,17 +3,23 @@ from typing import Annotated, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.core.config import settings
 from app.models.models import DisplayStyle, NodeType
 
 Text = Annotated[str, Field(min_length=1, max_length=500)]
+Name = Annotated[str, Field(min_length=1, max_length=200)]
+Description = Annotated[str, Field(max_length=5000)]
+
+STRICT = ConfigDict(extra="forbid")
+STRICT_FROM_ATTRIBUTES = ConfigDict(from_attributes=True, extra="forbid")
 
 
 class ProjectCreate(BaseModel):
-    name: Text
+    name: Name
 
 
 class ProjectUpdate(BaseModel):
-    name: Text
+    name: Name
 
 
 class ProjectOut(BaseModel):
@@ -27,7 +33,7 @@ class ProjectOut(BaseModel):
 class NodeCreate(BaseModel):
     text: Text
     node_type: NodeType = NodeType.GOAL
-    description: str = ""
+    description: Description = ""
     parent_id: str | None = None
     canvas_x: float = 0
     canvas_y: float = 0
@@ -35,7 +41,7 @@ class NodeCreate(BaseModel):
 
 class NodeUpdate(BaseModel):
     text: Text | None = None
-    description: str | None = Field(default=None, max_length=5000)
+    description: Description | None = None
     parent_id: str | None = None
     canvas_x: float | None = None
     canvas_y: float | None = None
@@ -98,29 +104,43 @@ class TaskSettingsOut(BaseModel):
 
 
 class ReorderTasks(BaseModel):
-    task_ids: list[str]
+    task_ids: Annotated[list[str], Field(max_length=settings.max_import_tasks)]
 
 
 class ProjectExportNode(NodeCreate):
+    model_config = STRICT
     id: str
 
 
 class ProjectExportDependency(DependencyCreate):
-    pass
+    model_config = STRICT
 
 
 class ProjectExportTask(TaskOut):
-    pass
+    model_config = STRICT_FROM_ATTRIBUTES
+    text: Text
+    position: Annotated[int, Field(ge=0)]
 
 
 class ProjectExportSettings(TaskSettingsOut):
-    pass
+    model_config = STRICT_FROM_ATTRIBUTES
 
 
 class ProjectExport(BaseModel):
+    """Import payloads are untrusted, so every list is explicitly bounded."""
+
+    model_config = STRICT
     format_version: Literal[1] = 1
-    name: Text
-    nodes: list[ProjectExportNode]
-    dependencies: list[ProjectExportDependency]
-    tasks: list[ProjectExportTask]
-    task_settings: list[ProjectExportSettings]
+    name: Name
+    nodes: Annotated[
+        list[ProjectExportNode], Field(max_length=settings.max_import_nodes)
+    ]
+    dependencies: Annotated[
+        list[ProjectExportDependency], Field(max_length=settings.max_import_nodes * 4)
+    ]
+    tasks: Annotated[
+        list[ProjectExportTask], Field(max_length=settings.max_import_tasks)
+    ]
+    task_settings: Annotated[
+        list[ProjectExportSettings], Field(max_length=settings.max_import_nodes)
+    ]

@@ -34,6 +34,9 @@
 - Configure Python test imports so the `backend/` source directory is available when commands run from the repository root.
 - Configure FastAPI, SQLAlchemy, Alembic, Pydantic, pytest, Ruff, and MyPy.
 - Create a local SQLite database configuration.
+- Keep one configured database URL as the single source of truth: application
+  settings own it, Alembic reads it, and relative SQLite paths resolve against
+  `backend/` so the working directory cannot split the data across files.
 - Configure CORS for the local web application.
 - Ensure Alembic, rather than application startup, owns schema creation.
 
@@ -265,6 +268,42 @@ uv run mypy backend/app
 uv run pytest -q
 cd frontend && npm run build
 ```
+
+## 19a. Security and robustness requirements
+
+Treat the app as a single-user local tool with no user accounts, and keep these
+guarantees enforced in code and covered by tests.
+
+Exposure:
+
+- Bind the API and the web application to loopback addresses only.
+- Allow only the local web application origins in CORS, without credentials, and
+  with an explicit method and header list.
+- Reject requests whose `Host` header is not a loopback name.
+- Support an optional shared-secret header (`X-Task-Planner-Token`), disabled
+  unless `TASK_PLANNER_API_TOKEN` is configured.
+- Serve production builds with a restrictive Content-Security-Policy.
+
+Untrusted input:
+
+- Reject request bodies over a configured size, and require a declared length.
+- Bound every stored string and every imported collection.
+- Validate imported documents with the same containment, connection, and task
+  rules as the interactive API, reject unknown fields, remap identifiers, and
+  renumber task positions so nothing is stored partially.
+- Validate project files in the browser before uploading them.
+
+Access and integrity:
+
+- Scope every node, dependency, task, and task-settings route under its project,
+  so identifiers from another project are invisible.
+- Never write during a `GET` request.
+- Reject node changes that would invalidate an existing dependency.
+- Reverse a dependency in a single transaction rather than delete-and-recreate.
+- Keep `projects.updated_at` current for every change inside a project.
+- Run SQLite with foreign keys, WAL journaling, and a busy timeout, and roll the
+  session back when a request fails.
+- Sanitise file names for every browser download.
 
 ## 20. Final acceptance review
 
