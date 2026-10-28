@@ -7,7 +7,7 @@ from app.core.config import settings
 from app.core.security import API_TOKEN_HEADER
 from app.middleware import BodySizeLimitMiddleware
 
-app = FastAPI(title="Task Planner API", version="0.1.0")
+app = FastAPI(title="Margaritini API", version="0.1.0")
 app.add_middleware(BodySizeLimitMiddleware, max_bytes=settings.max_request_bytes)
 # The app is a local single-user tool: refuse hosts that are not loopback.
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.allowed_hosts)

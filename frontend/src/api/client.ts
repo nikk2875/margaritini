@@ -27,7 +27,7 @@ export type ProjectExport = {
 
 function headers(): Record<string, string> {
   const value: Record<string, string> = { 'Content-Type': 'application/json' }
-  if (API_TOKEN) value['X-Task-Planner-Token'] = API_TOKEN
+  if (API_TOKEN) value['X-Margaritini-Token'] = API_TOKEN
   return value
 }
 

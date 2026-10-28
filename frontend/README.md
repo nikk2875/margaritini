@@ -1,8 +1,9 @@
-# Task Planner web application
+# Margaritini web application
 
-The React + Vite client for Task Planner. Start the whole app (API, migrations and
-web application) with `./run_app.sh` in the repository root, or work on the client
-alone with the scripts below.
+The React + Vite client for Margaritini. Start the whole app (API, migrations and
+web application) with `./run_app.sh` in the repository root (`./run_app_venv.sh`
+runs it without uv, using the existing `.venv`), or work on the client alone
+with the scripts below.
 
 ```bash
 npm install     # once
@@ -21,8 +22,8 @@ npm run lint    # oxlint
 ## Configuration
 
 - `VITE_API_URL` – API base URL (default `http://localhost:8000/api`).
-- `VITE_API_TOKEN` – sent as `X-Task-Planner-Token` when the API is started with
-  `TASK_PLANNER_API_TOKEN`.
+- `VITE_API_TOKEN` – sent as `X-Margaritini-Token` when the API is started with
+  `MARGARITINI_API_TOKEN`.
 
 The dev server and the API both listen on loopback only. A restrictive
 Content-Security-Policy is injected into production builds by `vite.config.ts`;

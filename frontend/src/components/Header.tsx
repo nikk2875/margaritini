@@ -38,7 +38,7 @@ export function Header({
 
   return (
     <header>
-      <strong>Task Planner</strong>
+      <strong>Margaritini</strong>
       <select
         className="project-picker"
         value={project?.id ?? ''}

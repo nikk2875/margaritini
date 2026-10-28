@@ -24,12 +24,12 @@ class Settings(BaseSettings):
     # The .env files are resolved absolutely so the working directory of the
     # process (repository root, backend/, ...) cannot change the configuration.
     model_config = SettingsConfigDict(
-        env_prefix="TASK_PLANNER_",
+        env_prefix="MARGARITINI_",
         env_file=(BACKEND_ROOT.parent / ".env", BACKEND_ROOT / ".env"),
         extra="ignore",
     )
 
-    database_url: str = "sqlite:///./task_planner.db"
+    database_url: str = "sqlite:///./margaritini.db"
     cors_origins: list[str] = [
         "http://localhost:6002",
         "http://127.0.0.1:6002",

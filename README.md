@@ -1,6 +1,6 @@
-# Task Planner
+# Margaritini
 
-Task Planner is a visual workspace for turning ideas into an actionable project plan.
+Margaritini is a visual workspace for turning ideas into an actionable project plan.
 
 Use it to create primary goals, break them into secondary goals, add actions and tasks, connect related work, and produce a clear written plan when you are ready to share it.
 
@@ -18,8 +18,9 @@ Use it to create primary goals, break them into secondary goals, add actions and
 
 Install the required tools before starting:
 
-- [uv](https://docs.astral.sh/uv/)
 - Node.js 22 or later
+- [uv](https://docs.astral.sh/uv/) — optional; only needed to create the
+  Python environment (see [Without uv](#without-uv) to skip it entirely)
 
 Install the web-app packages once:
 
@@ -29,12 +30,43 @@ npm install
 cd ..
 ```
 
-## Start the app
+### With uv (recommended)
 
-From the project folder, run:
+Create the Python environment once:
 
 ```bash
-./run_app.sh
+uv sync --all-groups
+```
+
+### Without uv
+
+Python 3.13 or later and its bundled `pip` are enough. The runtime
+dependencies are installed directly — the project has no build system, so
+there is nothing to install with `pip install -e .`:
+
+```bash
+python3 -m venv .venv
+.venv/bin/pip install "alembic>=1.18.5" "fastapi>=0.141.1" \
+    "pydantic-settings>=2.14.2" "sqlalchemy>=2.0.51" "uvicorn[standard]>=0.52.0"
+# optional tools for the tests and checks:
+.venv/bin/pip install pytest httpx mypy ruff
+```
+
+A `.venv` copied from another machine works too. If its Python link points to
+a path that does not exist locally, re-link it without losing the installed
+packages:
+
+```bash
+python3 -m venv .venv --upgrade
+```
+
+## Start the app
+
+From the project folder, run either launcher:
+
+```bash
+./run_app.sh        # uses uv
+./run_app_venv.sh   # uses the existing .venv; uv is not required
 ```
 
 Then open [http://localhost:6002](http://localhost:6002).
@@ -43,7 +75,7 @@ Press `Ctrl+C` in the terminal to stop the app.
 
 ## Security and data
 
-Task Planner is a single-user tool that runs on your own machine.
+Margaritini is a single-user tool that runs on your own machine.
 
 - The web application and the API listen on loopback (`127.0.0.1`) only, and the
   API accepts requests from the local web application origin. There is no user
@@ -55,11 +87,11 @@ Task Planner is a single-user tool that runs on your own machine.
 
 Optional environment variables (see `.env.example`):
 
-- `TASK_PLANNER_DATABASE_URL` – database location used by the app and migrations.
-- `TASK_PLANNER_API_TOKEN` – require a shared secret on every API request; set
+- `MARGARITINI_DATABASE_URL` – database location used by the app and migrations.
+- `MARGARITINI_API_TOKEN` – require a shared secret on every API request; set
   `VITE_API_TOKEN` for the web application to match.
-- `TASK_PLANNER_CORS_ORIGINS`, `TASK_PLANNER_ALLOWED_HOSTS`,
-  `TASK_PLANNER_MAX_REQUEST_BYTES` – tighten or adapt the network defaults.
+- `MARGARITINI_CORS_ORIGINS`, `MARGARITINI_ALLOWED_HOSTS`,
+  `MARGARITINI_MAX_REQUEST_BYTES` – tighten or adapt the network defaults.
 
 ## Basic workflow
 

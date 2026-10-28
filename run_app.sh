@@ -7,7 +7,7 @@ FRONTEND_DIR="$ROOT_DIR/frontend"
 
 for tool in uv npm; do
   if ! command -v "$tool" >/dev/null 2>&1; then
-    echo "Task Planner needs '$tool' on your PATH. Please install it and try again." >&2
+    echo "Margaritini needs '$tool' on your PATH. Please install it and try again." >&2
     exit 1
   fi
 done
@@ -38,7 +38,7 @@ BACKEND_PID=$!
 ) &
 FRONTEND_PID=$!
 
-echo "Task Planner is starting:"
+echo "Margaritini is starting:"
 echo "  Frontend: http://localhost:6002"
 echo "  API:      http://localhost:8000/api"
 echo "Press Ctrl+C to stop both services."
